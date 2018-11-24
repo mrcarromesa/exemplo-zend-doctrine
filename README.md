@@ -89,8 +89,9 @@ composer dump-autoload
 
 
 15 - Configuração do module/Album/config/module.config.php antes de executar os comandos na parte de driver do doctrine:
+```
 __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-
+```
 
 
 16 - no terminal vá para pasta raiz do projeto onde aparece:
@@ -119,8 +120,9 @@ irá gerar o geters e seteres para o arquivo Album.php e Track.php
 17 - Procurar em module/Album/src/Album/Entity/* "Album\" e substituir por "Album\Album\"
 
 18 - Configuração do module/Album/config/module.config.php após de executar os comandos na parte de driver do doctrine:
+```
 __NAMESPACE__ .'\\'.__NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-
+```
 19 - realizar o teste, executar a url:
 http://.../public/album/
 
