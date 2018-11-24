@@ -1,26 +1,35 @@
-# exemplo-zend-doctrine
-projeto com zend e doctrine
+# Como utilizar o zend com o doctrine:
+Projeto com zend e doctrine
 
 Referências:
-https://github.com/roggeo/using-doctrineorm-zf3
-https://samsonasik.wordpress.com/2013/04/10/zend-framework-2-generate-doctrine-entities-from-existing-database-using-doctrinemodule-and-doctrineormmodule/
+* https://github.com/roggeo/using-doctrineorm-zf3
+* https://samsonasik.wordpress.com/2013/04/10/zend-framework-2-generate-doctrine-entities-from-existing-database-using-doctrinemodule-and-doctrineormmodule/
+
+
 
 
 1 - No terminal executar para evitar timeout composer:
-networksetup -setv6off Wi-Fi
-
+para mac OS: networksetup -setv6off Wi-Fi
+mais info em: https://getcomposer.org/doc/articles/troubleshooting.md#degraded-mode
 
 2 - Obter o zendframework:
+```
 composer create-project -sdev zendframework/skeleton-application path/to/install
+```
 
 3 - Executar o comando para atualizar os pacotes:
+```
 composer update
-
+```
 4 - Obter o doctrine:
-    a - o doctrine-module:
-    composer require doctrine/doctrine-module
-    b - o doctrine-orm-module
-    composer require doctrine/doctrine-orm-module
+* o doctrine-module:
+```
+composer require doctrine/doctrine-module
+```
+* o doctrine-orm-module
+```
+composer require doctrine/doctrine-orm-module
+```
 5 - Observe que após instalações o config/modules.config.php deve estar como o presente neste projeto.
 
 6 - criar o arquivo doctrine.local.php em config/autoload e inserir o conetúdo presente no arquivo deste projeto, ajustando os dados de conexão.
@@ -43,16 +52,17 @@ composer update
 
 9 - no composer.json
 adicionar:
-
+```
 "autoload": {
     "psr-4": {
         "Album\\": "module/Album/src/"
     }
 },
-
+```
 10 - No terminal executar para aplicar as configurações do composer.json:
+```
 composer dump-autoload
-
+```
 11 - no config/modules.config.php principal adicionar o module "Album", conforme arquivo presente neste projeto.
 
 
@@ -91,9 +101,9 @@ public/
 vendor/
 ...
 execute:
-
+```
 ./vendor/doctrine/doctrine-module/bin/doctrine-module orm:convert-mapping --namespace="Album\\Entity\\" --force  --from-database annotation ./module/Album/src/
-
+```
 esse comando irá gerar na pasta module/Album/src/Album/Entity/
 dois arquivos sem geters e seters:
 Album.php
@@ -101,8 +111,9 @@ Track.php
 
 
 por fim executar o comando:
+```
 ./vendor/doctrine/doctrine-module/bin/doctrine-module orm:generate-entities ./module/Album/src/ --generate-annotations=true
-
+```
 irá gerar o geters e seteres para o arquivo Album.php e Track.php
 
 17 - Procurar em module/Album/src/Album/Entity/* "Album\" e substituir por "Album\Album\"
