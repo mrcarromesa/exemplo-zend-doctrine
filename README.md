@@ -69,10 +69,10 @@ composer dump-autoload
 
 13 - criar arquivos:
 
-module/Album/view/album/album/add.phtml
-module/Album/view/album/album/delete.phtml
-module/Album/view/album/album/edit.phtml
-module/Album/view/album/album/index.phtml
+* module/Album/view/album/album/add.phtml
+* module/Album/view/album/album/delete.phtml
+* module/Album/view/album/album/edit.phtml
+* module/Album/view/album/album/index.phtml
 
 
 14 - execute o sql dentro de data/base.sql * observando o nome da base configurada em config/autoload/doctrine.local.php
