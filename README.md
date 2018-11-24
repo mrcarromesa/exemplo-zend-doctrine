@@ -59,11 +59,13 @@ composer dump-autoload
 12 - criar o arquivo module/Album/src/Controller/AlbumController.php
     - cada function terminada em Action, equivale a url sem o action ex.:
     o addAction equivale a url add/
-URL                             Metodo
-http://.../album            =>	Album\Controller\AlbumController::indexAction
-http://.../album/add        =>	Album\Controller\AlbumController::addAction
-http://.../album/edit       =>	Album\Controller\AlbumController::editAction
-http://.../album/delete     =>	Album\Controller\AlbumController::deleteAction
+
+| URL                      | Metodo                                          |
+| ------------------------ | ----------------------------------------------- |
+| http://.../album         | Album\Controller\AlbumController::indexAction   |
+| http://.../album/add     | Album\Controller\AlbumController::addAction     |
+| http://.../album/edit    | Album\Controller\AlbumController::editAction    |
+| http://.../album/delete  | Album\Controller\AlbumController::deleteAction  |
 
 13 - criar arquivos:
 
