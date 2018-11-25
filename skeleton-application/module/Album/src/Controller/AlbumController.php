@@ -49,11 +49,77 @@ class AlbumController extends AbstractActionController
         }
     }
 
+    public function getLimit() {
+        $em = $this->em->get('Doctrine\ORM\EntityManager');
+        $qb = $em->createQueryBuilder();
+        $qb
+            ->select('a')
+            ->from('Album\Album\Entity\Track', 'a')
+            //->where('u = :user')
+            //->setParameter('user', 1)
+            ->orderBy('a.titulo', 'ASC')
+            ->setFirstResult(1)
+            ->setMaxResults(1);
+
+        
+        foreach($qb->getQuery()->getResult() as $aa) {
+            print_r($aa->getTitulo());
+            //print_r($aa->getFkAlbum());
+            /*if ((method_exists($aa,'getFkAlbum')) && (method_exists($aa->getFkAlbum(),'getArtista'))) {
+                echo 'aqui';
+                print_r($aa->getFkAlbum()->getArtista());
+            }*/
+            echo '<br>';
+        }
+    }
+
+    public function deleteRegistro()
+    {
+        
+
+        
+        $em = $this->em->get('Doctrine\ORM\EntityManager');
+        $qb = $em->createQueryBuilder();
+        $qb->delete('Album\Album\Entity\Track', 's');
+        $qb->where('s.id = :id');
+        $qb->setParameter('id', 1);
+        
+        //... do some work
+        $query = $qb->getQuery();
+        $query->execute();
+        
+
+    }
+
+    public function update()
+    {
+        $em = $this->em->get('Doctrine\ORM\EntityManager');
+        
+        
+        $data = $em->getReference('Album\Album\Entity\Track', 2);
+        $data->setTitulo('sdafasdf');
+
+        $em->merge($data);
+        $em->flush();
+
+        //$em = $this->em->get('Doctrine\ORM\EntityManager');
+        $idAlbum = $em->getRepository('Album\Album\Entity\Album')->findOneById(['id' => 1]);
+
+        $track = new \Album\Album\Entity\Track;
+        $track->setTitulo('insert');
+        $track->setFkAlbum($idAlbum);
+        $em->persist($track);
+        $em->flush();
+    }
+
     public function indexAction()
     {
         //======================LEFT JOIN COM DOCTRINE====================
         //$this->getLeftJoin();
         //======================LEFT JOIN COM DOCTRINE====================
+        $this->update();
+        $this->deleteRegistro();
+        $this->getLimit();
         
         $em = $this->em->get('Doctrine\ORM\EntityManager');
         $query = $em->getRepository('Album\Album\Entity\Track')->findAll();
@@ -81,7 +147,7 @@ class AlbumController extends AbstractActionController
         // Render the view template.
         /*implementar paginacao*/
         
-        /*foreach($data as $key=>$row)
+        /*foreach($query as $key=>$row)
         {
             echo $row->getFkAlbum()->getArtista().' :: '.$row->getTitulo();
             echo '<br />';
