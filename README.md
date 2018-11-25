@@ -126,3 +126,53 @@ __NAMESPACE__ .'\\'.__NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
 19 - realizar o teste, executar a url:
 http://.../public/album/
 
+====
+Opcionais:
+===
+Implementar paginação:
+
+1 - executar o comando:
+```
+composer require zendframework/zend-paginator
+```
+
+2 - Adicionar as classes correspondentes:
+```
+/*PAGINACAO*/
+use Zend\Paginator\Paginator;
+use Zend\Paginator\Adapter\ArrayAdapter;
+/*PAGINACAO*/
+```
+
+3 - Adaptar o código:
+```
+$em = $this->em->get('Doctrine\ORM\EntityManager');
+$query = $em->getRepository('Album\Album\Entity\Track')->findAll();
+
+/*implementar paginacao*/
+$paginator = new Paginator(new ArrayAdapter($query));
+$page = $this->params()->fromQuery('page', 1);
+$paginator->setDefaultItemCountPerPage(1);        
+$paginator->setCurrentPageNumber($page);
+return new ViewModel([
+    'posts' => $paginator, //dados e páginação
+    'page' => $page //nr. da página
+]);
+```
+
+4 - Criar arquivo em module/Album/view/partial/paginator.phtml, com o conteudo presente nele.
+
+5 - Adicionar o código para os dados e paginação:
+```
+<?php if($this->posts): ?>
+<?php //Dados ?>
+<?php foreach($this->posts as $entity): ?>
+    <?php print_r($entity->getFkAlbum()->getArtista()); ?>
+<?php endforeach ?>
+<?php //\Dados ?>
+<?php //Paginação ?>
+<?php echo $this->paginationControl($this->posts,'Sliding','partial/paginator',['route' => 'album']); ?>
+<?php //\Paginação ?>
+<?php endif ?>
+```
+
