@@ -130,6 +130,9 @@ http://.../public/album/
 Opcionais:
 ===
 Implementar paginação:
+- Referências: 
+- https://www.youtube.com/watch?v=LdEuAMbp5JQ
+- https://framework.zend.com/manual/2.4/en/tutorials/tutorial.pagination.html
 
 1 - executar o comando:
 ```

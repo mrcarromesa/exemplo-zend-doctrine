@@ -20,8 +20,41 @@ class AlbumController extends AbstractActionController
         $this->em = $em;
     }
 
+    public function getLeftJoin()
+    {
+        $em = $this->em->get('Doctrine\ORM\EntityManager');
+        $qb = $em->createQueryBuilder();
+        $qb
+            ->select('a', 'u')
+            ->from('Album\Album\Entity\Track', 'a')
+            ->leftJoin(
+                'Album\Album\Entity\Album',
+                'u',
+                \Doctrine\ORM\Query\Expr\Join::WITH,
+                'a.fkAlbum = u.id'
+            )
+            ->where('u = :user')
+            ->setParameter('user', 1)
+            ->orderBy('a.titulo', 'DESC');
+
+        
+        foreach($qb->getQuery()->getResult() as $aa) {
+            //print_r($aa->getArtista());
+            //print_r($aa->getFkAlbum());
+            if ((method_exists($aa,'getFkAlbum')) && (method_exists($aa->getFkAlbum(),'getArtista'))) {
+                echo 'aqui';
+                print_r($aa->getFkAlbum()->getArtista());
+            }
+            echo '<br>';
+        }
+    }
+
     public function indexAction()
     {
+        //======================LEFT JOIN COM DOCTRINE====================
+        //$this->getLeftJoin();
+        //======================LEFT JOIN COM DOCTRINE====================
+        
         $em = $this->em->get('Doctrine\ORM\EntityManager');
         $query = $em->getRepository('Album\Album\Entity\Track')->findAll();
         
