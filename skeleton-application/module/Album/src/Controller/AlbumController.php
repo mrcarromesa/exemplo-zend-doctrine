@@ -117,9 +117,15 @@ class AlbumController extends AbstractActionController
         //======================LEFT JOIN COM DOCTRINE====================
         //$this->getLeftJoin();
         //======================LEFT JOIN COM DOCTRINE====================
-        $this->update();
-        $this->deleteRegistro();
-        $this->getLimit();
+        //======================UPDATE E INSERT====================
+        //$this->update();
+        //======================UPDATE E INSERT====================
+        //======================DELETE====================
+        //$this->deleteRegistro();
+        //======================DELETE====================
+        //======================SELECT C/ LIMIT====================
+        //$this->getLimit();
+        //======================SELECT C/ LIMIT====================
         
         $em = $this->em->get('Doctrine\ORM\EntityManager');
         $query = $em->getRepository('Album\Album\Entity\Track')->findAll();
