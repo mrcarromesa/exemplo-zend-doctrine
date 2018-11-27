@@ -179,7 +179,8 @@ class AlbumController extends AbstractActionController
 
     public function indexAction()
     {
-        $this->readCSV();
+        //$this->readCSV();
+        /*
         return $this->redirect()
             ->toRoute('album', 
                     array('action' => 'exportXls'
@@ -187,6 +188,7 @@ class AlbumController extends AbstractActionController
                     )
                     //,array('fragment' => 'm' . $message->getId())
         );
+        */
         //======================LEFT JOIN COM DOCTRINE====================
         //$this->getLeftJoin();
         //======================LEFT JOIN COM DOCTRINE====================
@@ -218,8 +220,30 @@ class AlbumController extends AbstractActionController
             //'tagCloud' => $tagCloud
         ]);
         
+
+
+        //select max:
+        //ajuda: https://stackoverflow.com/questions/20023426/symfony-doctrine-sum-and-avg-score-of-players
+        $em = $this->em->get('Doctrine\ORM\EntityManager');
+        $qr = $em->getRepository('Album\Album\Entity\Track');
+        //$qb = $em->createQueryBuilder('select max(s.id) FROM Album\Album\Entity\Track');
+        $qb = $qr->createQueryBuilder('s');
+        $qb->select('max(s.id) as score');
+
+        // get the Query from the QueryBuilder here ...
+        $query = $qb->getQuery();
+
+        // ... then call getResult() on the Query (not on the QueryBuilder)
+        $result = $query->getResult();
+        print_r($result);
+        //$qb->select('max(s.id) Album\Album\Entity\Track', 's');
+        //$qb->where('s.id = :id');
+        //$qb->setParameter('id', 1);
         
-                       
+        //... do some work
+        
+        
+        
         // Get popular tags.
         //$tagCloud = $this->postManager->getTagCloud();
         
