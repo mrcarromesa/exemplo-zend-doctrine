@@ -20,6 +20,69 @@ class AlbumController extends AbstractActionController
         $this->em = $em;
     }
 
+    public function readCSV(){
+        //print_r($this->basePath());
+        
+        /*ini_set('auto_detect_line_endings',TRUE);
+        $handle = fopen('./data/teste.csv','r');
+        while ( ($data = fgetcsv($handle) ) !== FALSE ) {
+            print_r($data);
+        }
+        ini_set('auto_detect_line_endings',FALSE);*/
+        
+    }
+
+    public function exportXlsAction()
+    {
+        set_time_limit( 0 );
+        //$model = new Default_Model_SomeModel();
+        //$data = $model->getData();
+        $data = ['row' => ['col1'=>'teste1', 'col2'=> 'teste 3','col3'=>'teste4']];
+        $filename =  "./data/excel-" . date( "m-d-Y" ) . ".xls";
+        $realPath = realpath( $filename );
+        if ( false === $realPath )
+        {
+            touch( $filename );
+            chmod( $filename, 0777 );
+        }
+        $filename = realpath( $filename );
+        $handle = fopen( $filename, "w" );
+        $finalData = array();
+        
+        foreach ( $data AS $row )
+        {
+            $finalData[] = array(
+                utf8_decode( $row["col1"] ), // For chars with accents.
+                utf8_decode( $row["col2"] ),
+                utf8_decode( $row["col3"] ),
+            );
+        }
+        foreach ( $finalData AS $finalRow )
+        {
+            fputcsv( $handle, $finalRow, "\t" );
+        }
+        fclose( $handle );
+        $view = new ViewModel([
+            'message' => 'Hello world',
+        ]);
+
+        // Disable layouts; `MvcEvent` will use this View Model instead
+        $view->setTerminal(true);
+
+        /*$this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();*/
+        header( "Content-Type: application/vnd.ms-excel; charset=UTF-8" );
+        header( "Content-Disposition: attachment; filename=otros-fondos.xls" );
+        header( "Content-Transfer-Encoding: binary" );
+        header( "Expires: 0" );
+        header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
+        header( "Pragma: public" );
+        header( "Content-Length: " . filesize( $filename ) );
+        
+        readfile( $filename ); exit();
+        return $view;
+    }
+
     public function getLeftJoin()
     {
         $em = $this->em->get('Doctrine\ORM\EntityManager');
@@ -114,6 +177,14 @@ class AlbumController extends AbstractActionController
 
     public function indexAction()
     {
+        $this->readCSV();
+        return $this->redirect()
+            ->toRoute('album', 
+                    array('action' => 'exportXls'
+                    //,'id' => $message->getChat()->getId()
+                    )
+                    //,array('fragment' => 'm' . $message->getId())
+        );
         //======================LEFT JOIN COM DOCTRINE====================
         //$this->getLeftJoin();
         //======================LEFT JOIN COM DOCTRINE====================
