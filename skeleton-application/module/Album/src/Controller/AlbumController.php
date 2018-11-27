@@ -79,7 +79,9 @@ class AlbumController extends AbstractActionController
         header( "Pragma: public" );
         header( "Content-Length: " . filesize( $filename ) );
         
-        readfile( $filename ); exit();
+        readfile( $filename ); 
+        unlink($filename);
+        exit();
         return $view;
     }
 
